@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Phishing URL Detection System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="top-header">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                🛡
+            </div>
+
+            <div>
+                <h1>Phishing URL Detection</h1>
+
+                <p>
+                    Information Assurance & Security
+                </p>
+            </div>
+
+        </div>
+
+        <div class="status-badge">
+            ● System Online
+        </div>
+
+    </header>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="container">
+
+
+        <!-- ================= INTRO ================= -->
+
+        <section class="intro">
+
+            <h2>Check a URL before you trust it</h2>
+
+            <p>
+                Analyze a website URL for characteristics
+                commonly associated with phishing attacks.
+            </p>
+
+        </section>
+
+
+        <!-- ================= URL SCANNER ================= -->
+
+        <section class="scanner-card">
+
+            <label for="urlInput">
+                Website URL
+            </label>
+
+            <div class="scanner-input">
+
+                <input
+                    type="text"
+                    id="urlInput"
+                    placeholder="https://example.com"
+                    autocomplete="off"
+                >
+
+                <button id="checkButton">
+                    <span>Scan URL</span>
+                </button>
+
+            </div>
+
+            <div class="quick-tests">
+
+                <span>Try an example:</span>
+
+                <button
+                    class="quick-btn"
+                    id="safeExample">
+                    Safe
+                </button>
+
+                <button
+                    class="quick-btn"
+                    id="suspiciousExample">
+                    Suspicious
+                </button>
+
+                <button
+                    class="quick-btn"
+                    id="ipExample">
+                    IP Address
+                </button>
+
+            </div>
+
+            <p id="errorMessage"></p>
+
+        </section>
+
+
+        <!-- ================= LOADING ================= -->
+
+        <div id="loading" class="loading hidden">
+
+            <div class="spinner"></div>
+
+            <span>Analyzing URL...</span>
+
+        </div>
+
+
+        <!-- ================= RESULTS ================= -->
+
+        <section id="resultSection" class="hidden">
+
+
+            <!-- ================= RISK CARD ================= -->
+
+            <div class="risk-card">
+
+                <div class="risk-left">
+
+                    <span class="section-label">
+                        SECURITY ASSESSMENT
+                    </span>
+
+                    <h2 id="resultTitle">
+                        Low Risk
+                    </h2>
+
+                    <p id="resultDescription">
+                        No major suspicious characteristics
+                        were detected.
+                    </p>
+
+                </div>
+
+
+                <div class="risk-score">
+
+                    <div class="score-number">
+
+                        <span id="score">
+                            0
+                        </span>
+
+                        <small>/ 100</small>
+
+                    </div>
+
+                    <span>
+                        Risk Score
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= RISK BAR ================= -->
+
+            <div class="risk-bar-container">
+
+                <div class="risk-scale">
+
+                    <span>Low</span>
+
+                    <span>Medium</span>
+
+                    <span>High</span>
+
+                </div>
+
+                <div class="risk-bar">
+
+                    <div
+                        id="riskBarFill"
+                        class="risk-bar-fill">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= URL BREAKDOWN ================= -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            URL STRUCTURE
+                        </span>
+
+                        <h3>URL Breakdown</h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="url-breakdown">
+
+                    <div class="breakdown-item">
+
+                        <span>Protocol</span>
+
+                        <strong id="protocol">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="breakdown-item">
+
+                        <span>Domain</span>
+
+                        <strong id="domain">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="breakdown-item">
+
+                        <span>Path</span>
+
+                        <strong id="path">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="breakdown-item">
+
+                        <span>Query</span>
+
+                        <strong id="query">
+                            -
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+           <!-- ================= LIVE WEBSITE VERIFICATION ================= -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="section-label">
+
+                            LIVE VERIFICATION
+
+                        </span>
+
+                        <h3>Live Website Verification</h3>
+
+                    </div>
+
+                </div>
+
+                <div class="security-grid">
+
+                    <!-- DNS -->
+
+                    <div class="security-item" id="dnsStatus">
+
+                        <div class="security-icon">
+
+                            🌐
+
+                        </div>
+
+                        <div>
+
+                            <strong>DNS Status</strong>
+
+                            <span>
+
+                                Checking...
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- WEBSITE -->
+
+                    <div class="security-item" id="websiteStatus">
+
+                        <div class="security-icon">
+
+                            🖥️
+
+                        </div>
+
+                        <div>
+
+                            <strong>Website Status</strong>
+
+                            <span>
+
+                                Checking...
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- HTTP STATUS -->
+
+                    <div class="security-item" id="httpStatus">
+
+                        <div class="security-icon">
+
+                            📡
+
+                        </div>
+
+                        <div>
+
+                            <strong>HTTP Status</strong>
+
+                            <span>
+
+                                Checking...
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- HTTPS -->
+
+                    <div class="security-item" id="liveHttpsStatus">
+
+                        <div class="security-icon">
+
+                            🔒
+
+                        </div>
+
+                        <div>
+
+                            <strong>HTTPS Connection</strong>
+
+                            <span>
+
+                                Checking...
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- REDIRECTS -->
+
+                    <div class="security-item" id="redirectStatus">
+
+                        <div class="security-icon">
+
+                            🔀
+
+                        </div>
+
+                        <div>
+
+                            <strong>Redirects</strong>
+
+                            <span>
+
+                                Checking...
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- RESPONSE TIME -->
+
+                    <div class="security-item" id="responseTimeStatus">
+
+                        <div class="security-icon">
+
+                            ⏱️
+
+                        </div>
+
+                        <div>
+
+                            <strong>Response Time</strong>
+
+                            <span>
+
+                                Checking...
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- LIVE VERIFICATION DETAILS -->
+
+                <div class="url-breakdown">
+
+                    <div class="breakdown-item">
+
+                        <span>IP Address</span>
+
+                        <strong id="liveIpAddress">
+
+                            -
+
+                        </strong>
+
+                    </div>
+
+                    <div class="breakdown-item">
+
+                        <span>Final URL</span>
+
+                        <strong id="finalUrl">
+
+                            -
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+
+
+            <!-- ================= FEATURE TABLE ================= -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            DETAILED ANALYSIS
+                        </span>
+
+                        <h3>URL Features</h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="feature-table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Feature</th>
+
+                                <th>Value</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <tr>
+                                <td>URL Length</td>
+                                <td id="lengthFeature">-</td>
+                            </tr>
+
+                            <tr>
+                                <td>Domain Length</td>
+                                <td id="domainLengthFeature">-</td>
+                            </tr>
+
+                            <tr>
+                                <td>Path Length</td>
+                                <td id="pathLengthFeature">-</td>
+                            </tr>
+
+                            <tr>
+                                <td>Subdomains</td>
+                                <td id="subdomainFeature">-</td>
+                            </tr>
+
+                            <tr>
+                                <td>Digits</td>
+                                <td id="digitFeature">-</td>
+                            </tr>
+
+                            <tr>
+                                <td>Digit Ratio</td>
+                                <td id="digitRatioFeature">-</td>
+                            </tr>
+
+                            <tr>
+                                <td>Dotted Components</td>
+                                <td id="dotFeature">-</td>
+                            </tr>
+
+                            <tr>
+                                <td>Hyphens</td>
+                                <td id="hyphenFeature">-</td>
+                            </tr>
+
+                            <tr>
+                                <td>Special Characters</td>
+                                <td id="specialFeature">-</td>
+                            </tr>
+
+                            <tr>
+                                <td>Query Parameters</td>
+                                <td id="queryFeature">-</td>
+                            </tr>
+
+                            <tr>
+                                <td>Port</td>
+                                <td id="portFeature">-</td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= REASONS ================= -->
+
+            <section class="panel reasons-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            DETECTION DETAILS
+                        </span>
+
+                        <h3>Why was this URL flagged?</h3>
+
+                    </div>
+
+                </div>
+
+
+                <ul id="reasonsList" class="reasons-list"></ul>
+
+            </section>
+
+
+            <!-- ================= RECENT SCANS ================= -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            HISTORY
+                        </span>
+
+                        <h3>Recent Scans</h3>
+
+                    </div>
+
+                    <button
+                        id="clearHistory"
+                        class="clear-button">
+
+                        Clear History
+
+                    </button>
+
+                </div>
+
+
+                <div id="historyList"
+                     class="history-list">
+
+                    <p class="empty-history">
+                        No scans yet.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+        </section>
+
+
+        <!-- ================= DISCLAIMER ================= -->
+
+        <section class="disclaimer">
+
+            <strong>Important:</strong>
+
+            This system uses heuristic URL characteristics
+            to identify potentially suspicious URLs.
+            A low-risk result does not guarantee that a
+            website is safe, and a suspicious result does
+            not by itself prove malicious activity.
+
+        </section>
+
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+            Phishing URL Detection System
+        </p>
+
+        <p>
+            Information Assurance & Security Project
+        </p>
+
+    </footer>
+
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
